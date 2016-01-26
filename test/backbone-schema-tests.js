@@ -1553,7 +1553,7 @@
 
                 describe('minimum', function() {
 
-                    describe('', function() {
+                    describe('minimum', function() {
 
                         beforeEach(function() {
                             tester = new ModelValidationTester("minimum");
@@ -1572,7 +1572,7 @@
                         });
                     });
 
-                    describe('', function() {
+                    describe('minimum0', function() {
 
                         beforeEach(function() {
                             tester = new ModelValidationTester("minimum0");
@@ -1609,7 +1609,7 @@
 
                 describe('maximum', function() {
 
-                    describe('', function() {
+                    describe('maximum', function() {
 
                         beforeEach(function() {
                             tester = new ModelValidationTester("maximum");
@@ -1628,7 +1628,7 @@
                         });
                     });
 
-                    describe('', function() {
+                    describe('maximum0', function() {
 
                         beforeEach(function() {
                             tester = new ModelValidationTester("maximum0");
@@ -1894,21 +1894,44 @@
 
                 describe('minItems', function() {
 
+                   var model1, model2;
+
                     beforeEach(function() {
+                        var sch = {
+                            "type": "object",
+                            "properties": {
+                                "a": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": false
+                        };
+                        var dta = {
+                            "a": "1",
+                            "b": "2"
+                        };
+
+                        model1 = SchemaFactory.createInstance(sch, dta);
+                        model2 = SchemaFactory.createInstance(sch, dta);
+
                         tester = new ModelValidationTester("minItems");
                     });
 
+
+
                     it('should validate when minItems constraint is met', function() {
                         var collection = tester.model.get('minItems');
-                        collection.add([new SchemaModel(), new SchemaModel()]);
+                        //collection.add([new SchemaModel(), new SchemaModel()]);
+                        collection.add([model1, model2]);
                         assert.isTrue(tester.isValid(undefined, {
                             deep: true
-                        }));
+                        }))
                     });
 
                     it('should not validate when minItems constraint is not met', function() {
                         var collection = tester.model.get('minItems');
-                        collection.add([new SchemaModel()]);
+                        //collection.add([new SchemaModel()]);
+                        collection.add([model1]);
                         assert.isFalse(tester.isValid(undefined, {
                             deep: true
                         }));
@@ -1916,7 +1939,8 @@
 
                     it('should return appropriate errors when minItems constraint is not met', function() {
                         var collection = tester.model.get('minItems');
-                        collection.add([new SchemaModel()]);
+                        //collection.add([new SchemaModel()]);
+                        collection.add([model1]);
                         assert.isTrue(tester.testCollectionErrors(undefined, {
                             deep: true
                         }));
@@ -1925,13 +1949,34 @@
 
                 describe('maxItems', function() {
 
+
+                    var model1, model2, model3;
+
                     beforeEach(function() {
+                        var sch = {
+                            "type": "object",
+                            "properties": {
+                                "a": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": false
+                        };
+                        var dta = {
+                            "a": "1",
+                            "b": "2"
+                        };
+
+                        model1 = SchemaFactory.createInstance(sch, dta);
+                        model2 = SchemaFactory.createInstance(sch, dta);
+                        model3 = SchemaFactory.createInstance(sch, dta);
+
                         tester = new ModelValidationTester("maxItems");
                     });
 
                     it('should validate when maxItems constraint is met', function() {
                         var collection = tester.model.get('maxItems');
-                        collection.add([new SchemaModel(), new SchemaModel()]);
+                        collection.add([model1, model2]);
                         assert.isTrue(tester.isValid(undefined, {
                             deep: true
                         }));
@@ -1939,7 +1984,8 @@
 
                     it('should not validate when maxItems constraint is not met', function() {
                         var collection = tester.model.get('maxItems');
-                        collection.add([new SchemaModel(), new SchemaModel(), new SchemaModel()]);
+                        //collection.add([new SchemaModel(), new SchemaModel(), new SchemaModel()]);
+                        collection.add([model1, model2, model3]);
                         assert.isFalse(tester.isValid(undefined, {
                             deep: true
                         }));
@@ -1947,7 +1993,7 @@
 
                     it('should return appropriate errors when maxItems constraint is not met', function() {
                         var collection = tester.model.get('maxItems');
-                        collection.add([new SchemaModel(), new SchemaModel(), new SchemaModel()]);
+                        collection.add([model1, model2, model3]);
                         assert.isTrue(tester.testCollectionErrors(undefined, {
                             deep: true
                         }));
